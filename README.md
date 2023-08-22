@@ -12,17 +12,19 @@ making API requests, and handling responses.
 To interact with the eBay Finding API, create a `FindingClient`:
 
 ```go
-fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+client := &http.Client{Timeout: time.Second * 5}
+appID := "your_app_id"
+fc := ebay.NewFindingClient(client, appID)
 params := map[string]string{
-    "categoryId":            "9355",
-    "itemFilter.name":       "MaxPrice",
-    "itemFilter.value":      "500.0",
-    "itemFilter.paramName":  "Currency",
-    "itemFilter.paramValue": "EUR",
+	"categoryId":            "9355",
+	"itemFilter.name":       "MaxPrice",
+	"itemFilter.value":      "500.0",
+	"itemFilter.paramName":  "Currency",
+	"itemFilter.paramValue": "EUR",
 }
 resp, err := fc.FindItemsByCategories(context.Background(), params)
 if err != nil {
-    // handle error
+	// handle error
 }
 ```
 

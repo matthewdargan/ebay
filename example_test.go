@@ -20,7 +20,9 @@ func ExampleFindingClient_FindItemsByCategories() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+	client := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	fc := ebay.NewFindingClient(client, appID)
 	fc.URL = "http://127.0.0.1"
 	resp, err := fc.FindItemsByCategories(context.Background(), params)
 	if err != nil {
@@ -40,7 +42,9 @@ func ExampleFindingClient_FindItemsByKeywords() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+	client := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	fc := ebay.NewFindingClient(client, appID)
 	fc.URL = "http://127.0.0.1"
 	resp, err := fc.FindItemsByKeywords(context.Background(), params)
 	if err != nil {
@@ -61,7 +65,9 @@ func ExampleFindingClient_FindItemsAdvanced() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+	client := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	fc := ebay.NewFindingClient(client, appID)
 	fc.URL = "http://127.0.0.1"
 	resp, err := fc.FindItemsAdvanced(context.Background(), params)
 	if err != nil {
@@ -82,7 +88,9 @@ func ExampleFindingClient_FindItemsByProduct() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+	client := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	fc := ebay.NewFindingClient(client, appID)
 	fc.URL = "http://127.0.0.1"
 	resp, err := fc.FindItemsByProduct(context.Background(), params)
 	if err != nil {
@@ -102,7 +110,9 @@ func ExampleFindingClient_FindItemsInEBayStores() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+	client := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	fc := ebay.NewFindingClient(client, appID)
 	fc.URL = "http://127.0.0.1"
 	resp, err := fc.FindItemsInEBayStores(context.Background(), params)
 	if err != nil {

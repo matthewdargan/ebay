@@ -8,7 +8,9 @@ making API requests, and handling responses.
 
 To interact with the eBay Finding API, create a [FindingClient]:
 
-	fc := ebay.NewFindingClient(&http.Client{Timeout: time.Second * 5}, "your_app_id")
+	client := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	fc := ebay.NewFindingClient(client, appID)
 	params := map[string]string{
 		"categoryId":            "9355",
 		"itemFilter.name":       "MaxPrice",
