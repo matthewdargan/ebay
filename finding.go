@@ -72,8 +72,7 @@ func (e *APIError) Error() string {
 // [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
 func (c *FindingClient) FindItemsByCategories(ctx context.Context, params map[string]string) (FindItemsByCategoriesResponse, error) {
 	var findItems FindItemsByCategoriesResponse
-	err := c.findItems(ctx, params, &findItemsByCategoryParams{appID: c.AppID}, &findItems)
-	if err != nil {
+	if err := c.findItems(ctx, params, &findItemsByCategoryParams{appID: c.AppID}, &findItems); err != nil {
 		return findItems, err
 	}
 	return findItems, nil
@@ -96,8 +95,7 @@ func (c *FindingClient) FindItemsByCategories(ctx context.Context, params map[st
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
 func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[string]string) (FindItemsByKeywordsResponse, error) {
 	var findItems FindItemsByKeywordsResponse
-	err := c.findItems(ctx, params, &findItemsByKeywordsParams{appID: c.AppID}, &findItems)
-	if err != nil {
+	if err := c.findItems(ctx, params, &findItemsByKeywordsParams{appID: c.AppID}, &findItems); err != nil {
 		return findItems, err
 	}
 	return findItems, nil
@@ -123,8 +121,7 @@ func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[stri
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
 func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string]string) (FindItemsAdvancedResponse, error) {
 	var findItems FindItemsAdvancedResponse
-	err := c.findItems(ctx, params, &findItemsAdvancedParams{appID: c.AppID}, &findItems)
-	if err != nil {
+	if err := c.findItems(ctx, params, &findItemsAdvancedParams{appID: c.AppID}, &findItems); err != nil {
 		return findItems, err
 	}
 	return findItems, nil
@@ -147,8 +144,7 @@ func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string
 // [Searching by Product]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-product.html
 func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[string]string) (FindItemsByProductResponse, error) {
 	var findItems FindItemsByProductResponse
-	err := c.findItems(ctx, params, &findItemsByProductParams{appID: c.AppID}, &findItems)
-	if err != nil {
+	if err := c.findItems(ctx, params, &findItemsByProductParams{appID: c.AppID}, &findItems); err != nil {
 		return findItems, err
 	}
 	return findItems, nil
@@ -176,8 +172,7 @@ func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[strin
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
 func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[string]string) (FindItemsInEBayStoresResponse, error) {
 	var findItems FindItemsInEBayStoresResponse
-	err := c.findItems(ctx, params, &findItemsInEBayStoresParams{appID: c.AppID}, &findItems)
-	if err != nil {
+	if err := c.findItems(ctx, params, &findItemsInEBayStoresParams{appID: c.AppID}, &findItems); err != nil {
 		return findItems, err
 	}
 	return findItems, nil
@@ -195,8 +190,7 @@ var (
 )
 
 func (c *FindingClient) findItems(ctx context.Context, params map[string]string, v findParamsValidator, res ResultProvider) error {
-	err := v.validate(params)
-	if err != nil {
+	if err := v.validate(params); err != nil {
 		return &APIError{Err: err, StatusCode: http.StatusBadRequest}
 	}
 	req, err := v.newRequest(ctx, c.URL)
@@ -214,8 +208,7 @@ func (c *FindingClient) findItems(ctx context.Context, params map[string]string,
 			StatusCode: http.StatusInternalServerError,
 		}
 	}
-	err = json.NewDecoder(resp.Body).Decode(&res)
-	if err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
 		return &APIError{
 			Err:        fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err),
 			StatusCode: http.StatusInternalServerError,

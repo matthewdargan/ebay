@@ -4640,8 +4640,7 @@ func testFindItems(t *testing.T, params map[string]string, findMethod string, wa
 				t.Fatal(err)
 			}
 			w.WriteHeader(http.StatusOK)
-			_, err = w.Write(body)
-			if err != nil {
+			if _, err = w.Write(body); err != nil {
 				t.Fatal(err)
 			}
 		}))
@@ -4676,7 +4675,7 @@ func testFindItems(t *testing.T, params map[string]string, findMethod string, wa
 
 	t.Run("returns error if the client returns an error", func(t *testing.T) {
 		t.Parallel()
-		fc := ebay.NewFindingClient(&http.Client{}, appID)
+		fc := ebay.NewFindingClient(http.DefaultClient, appID)
 		fc.URL = "http://localhost"
 
 		var err error
@@ -4789,8 +4788,7 @@ func testFindItems(t *testing.T, params map[string]string, findMethod string, wa
 		badData := `[123.1, 234.2]`
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
-			_, err := w.Write([]byte(badData))
-			if err != nil {
+			if _, err := w.Write([]byte(badData)); err != nil {
 				t.Fatal(err)
 			}
 		}))
@@ -4828,8 +4826,7 @@ func testFindItems(t *testing.T, params map[string]string, findMethod string, wa
 					t.Fatal(err)
 				}
 				w.WriteHeader(http.StatusOK)
-				_, err = w.Write(body)
-				if err != nil {
+				if _, err = w.Write(body); err != nil {
 					t.Fatal(err)
 				}
 			}))

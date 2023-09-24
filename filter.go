@@ -201,8 +201,7 @@ func processNonNumberedItemFilter(params map[string]string) ([]itemFilter, error
 		filter.paramName = &pn
 		filter.paramValue = &pv
 	}
-	err = handleItemFilterType(&filter, nil, params)
-	if err != nil {
+	if err = handleItemFilterType(&filter, nil, params); err != nil {
 		return nil, err
 	}
 	return []itemFilter{filter}, nil
@@ -235,8 +234,7 @@ func processNumberedItemFilters(params map[string]string) ([]itemFilter, error) 
 		itemFilters = append(itemFilters, itemFilter)
 	}
 	for i := range itemFilters {
-		err := handleItemFilterType(&itemFilters[i], itemFilters, params)
-		if err != nil {
+		if err := handleItemFilterType(&itemFilters[i], itemFilters, params); err != nil {
 			return nil, err
 		}
 	}
@@ -347,13 +345,11 @@ func handleItemFilterType(filter *itemFilter, itemFilters []itemFilter, params m
 			return fmt.Errorf("%w: %q", ErrInvalidDateTime, filter.values[0])
 		}
 	case excludeCategory:
-		err := validateExcludeCategories(filter.values)
-		if err != nil {
+		if err := validateExcludeCategories(filter.values); err != nil {
 			return err
 		}
 	case excludeSeller:
-		err := validateExcludeSellers(filter.values, itemFilters)
-		if err != nil {
+		if err := validateExcludeSellers(filter.values, itemFilters); err != nil {
 			return err
 		}
 	case expeditedShippingType:
@@ -361,33 +357,27 @@ func handleItemFilterType(filter *itemFilter, itemFilters []itemFilter, params m
 			return fmt.Errorf("%w: %q", ErrInvalidExpeditedShippingType, filter.values[0])
 		}
 	case feedbackScoreMax, feedbackScoreMin:
-		err := validateNumericFilter(filter, itemFilters, 0, feedbackScoreMax, feedbackScoreMin)
-		if err != nil {
+		if err := validateNumericFilter(filter, itemFilters, 0, feedbackScoreMax, feedbackScoreMin); err != nil {
 			return err
 		}
 	case listedIn:
-		err := validateGlobalID(filter.values[0])
-		if err != nil {
+		if err := validateGlobalID(filter.values[0]); err != nil {
 			return err
 		}
 	case listingType:
-		err := validateListingTypes(filter.values)
-		if err != nil {
+		if err := validateListingTypes(filter.values); err != nil {
 			return err
 		}
 	case localSearchOnly:
-		err := validateLocalSearchOnly(filter.values, itemFilters, params)
-		if err != nil {
+		if err := validateLocalSearchOnly(filter.values, itemFilters, params); err != nil {
 			return err
 		}
 	case locatedIn:
-		err := validateLocatedIns(filter.values)
-		if err != nil {
+		if err := validateLocatedIns(filter.values); err != nil {
 			return err
 		}
 	case maxBids, minBids:
-		err := validateNumericFilter(filter, itemFilters, 0, maxBids, minBids)
-		if err != nil {
+		if err := validateNumericFilter(filter, itemFilters, 0, maxBids, minBids); err != nil {
 			return err
 		}
 	case maxDistance:
@@ -402,13 +392,11 @@ func handleItemFilterType(filter *itemFilter, itemFilters []itemFilter, params m
 			return invalidIntegerError(filter.values[0], 1)
 		}
 	case maxPrice, minPrice:
-		err := validatePriceRange(filter, itemFilters)
-		if err != nil {
+		if err := validatePriceRange(filter, itemFilters); err != nil {
 			return err
 		}
 	case maxQuantity, minQuantity:
-		err := validateNumericFilter(filter, itemFilters, 1, maxQuantity, minQuantity)
-		if err != nil {
+		if err := validateNumericFilter(filter, itemFilters, 1, maxQuantity, minQuantity); err != nil {
 			return err
 		}
 	case modTimeFrom:
@@ -416,18 +404,15 @@ func handleItemFilterType(filter *itemFilter, itemFilters []itemFilter, params m
 			return fmt.Errorf("%w: %q", ErrInvalidDateTime, filter.values[0])
 		}
 	case seller:
-		err := validateSellers(filter.values, itemFilters)
-		if err != nil {
+		if err := validateSellers(filter.values, itemFilters); err != nil {
 			return err
 		}
 	case sellerBusinessType:
-		err := validateSellerBusinessType(filter.values)
-		if err != nil {
+		if err := validateSellerBusinessType(filter.values); err != nil {
 			return err
 		}
 	case topRatedSellerOnly:
-		err := validateTopRatedSellerOnly(filter.values[0], itemFilters)
-		if err != nil {
+		if err := validateTopRatedSellerOnly(filter.values[0], itemFilters); err != nil {
 			return err
 		}
 	case valueBoxInventory:

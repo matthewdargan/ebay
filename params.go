@@ -243,8 +243,7 @@ func (fp *findItemsByCategoryParams) validate(params map[string]string) error {
 	fp.categoryIDs = categoryIDs
 	globalID, ok := params["Global-ID"]
 	if ok {
-		err := validateGlobalID(globalID)
-		if err != nil {
+		if err := validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -278,8 +277,7 @@ func (fp *findItemsByCategoryParams) validate(params map[string]string) error {
 	}
 	sortOrder, ok := params["sortOrder"]
 	if ok {
-		err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil)
-		if err != nil {
+		if err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil); err != nil {
 			return err
 		}
 		fp.sortOrder = &sortOrder
@@ -375,8 +373,7 @@ func (fp *findItemsByKeywordsParams) validate(params map[string]string) error {
 	fp.keywords = keywords
 	globalID, ok := params["Global-ID"]
 	if ok {
-		err := validateGlobalID(globalID)
-		if err != nil {
+		if err := validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -410,8 +407,7 @@ func (fp *findItemsByKeywordsParams) validate(params map[string]string) error {
 	}
 	sortOrder, ok := params["sortOrder"]
 	if ok {
-		err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil)
-		if err != nil {
+		if err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil); err != nil {
 			return err
 		}
 		fp.sortOrder = &sortOrder
@@ -522,8 +518,7 @@ func (fp *findItemsAdvancedParams) validate(params map[string]string) error {
 	}
 	globalID, ok := params["Global-ID"]
 	if ok {
-		err := validateGlobalID(globalID)
-		if err != nil {
+		if err := validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -565,8 +560,7 @@ func (fp *findItemsAdvancedParams) validate(params map[string]string) error {
 	}
 	sortOrder, ok := params["sortOrder"]
 	if ok {
-		err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil)
-		if err != nil {
+		if err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil); err != nil {
 			return err
 		}
 		fp.sortOrder = &sortOrder
@@ -677,8 +671,7 @@ func (fp *findItemsByProductParams) validate(params map[string]string) error {
 	}
 	globalID, ok := params["Global-ID"]
 	if ok {
-		err := validateGlobalID(globalID)
-		if err != nil {
+		if err := validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -708,8 +701,7 @@ func (fp *findItemsByProductParams) validate(params map[string]string) error {
 	}
 	sortOrder, ok := params["sortOrder"]
 	if ok {
-		err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil)
-		if err != nil {
+		if err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil); err != nil {
 			return err
 		}
 		fp.sortOrder = &sortOrder
@@ -815,16 +807,14 @@ func (fp *findItemsInEBayStoresParams) validate(params map[string]string) error 
 		fp.keywords = &keywords
 	}
 	if ok {
-		err := validateStoreName(storeName)
-		if err != nil {
+		if err := validateStoreName(storeName); err != nil {
 			return err
 		}
 		fp.storeName = &storeName
 	}
 	globalID, ok := params["Global-ID"]
 	if ok {
-		err := validateGlobalID(globalID)
-		if err != nil {
+		if err := validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -859,8 +849,7 @@ func (fp *findItemsInEBayStoresParams) validate(params map[string]string) error 
 	}
 	sortOrder, ok := params["sortOrder"]
 	if ok {
-		err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil)
-		if err != nil {
+		if err := validateSortOrder(sortOrder, fp.itemFilters, fp.buyerPostalCode != nil); err != nil {
 			return err
 		}
 		fp.sortOrder = &sortOrder
@@ -948,8 +937,7 @@ func processCategoryIDs(params map[string]string) ([]string, error) {
 		return nil, ErrInvalidIndexSyntax
 	}
 	if nonNumberedExists {
-		err := validateCategoryID(categoryID)
-		if err != nil {
+		if err := validateCategoryID(categoryID); err != nil {
 			return nil, err
 		}
 		return []string{categoryID}, nil
@@ -960,8 +948,7 @@ func processCategoryIDs(params map[string]string) ([]string, error) {
 		if !ok {
 			break
 		}
-		err := validateCategoryID(cID)
-		if err != nil {
+		if err := validateCategoryID(cID); err != nil {
 			return nil, err
 		}
 		categoryIDs = append(categoryIDs, cID)
@@ -976,8 +963,7 @@ func validateCategoryID(id string) error {
 	if len(id) > maxCategoryIDLen {
 		return ErrInvalidCategoryIDLength
 	}
-	_, err := strconv.Atoi(id)
-	if err != nil {
+	if _, err := strconv.Atoi(id); err != nil {
 		return fmt.Errorf("%w: %w", ErrInvalidCategoryID, err)
 	}
 	return nil
@@ -1230,8 +1216,7 @@ func processAffiliate(params map[string]string) (*affiliate, error) {
 		return nil, ErrInvalidNetworkIDRange
 	}
 	if nID == ebayPartnerNetworkID {
-		err := validateTrackingID(trackingID)
-		if err != nil {
+		if err := validateTrackingID(trackingID); err != nil {
 			return nil, err
 		}
 	}
@@ -1241,8 +1226,7 @@ func processAffiliate(params map[string]string) (*affiliate, error) {
 }
 
 func validateTrackingID(trackingID string) error {
-	_, err := strconv.Atoi(trackingID)
-	if err != nil {
+	if _, err := strconv.Atoi(trackingID); err != nil {
 		return fmt.Errorf("%w: %w", ErrInvalidTrackingID, err)
 	}
 	const maxCampIDLen = 10
