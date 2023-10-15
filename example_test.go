@@ -20,18 +20,17 @@ func ExampleFindingClient_FindItemsByCategories() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	client := &http.Client{Timeout: time.Second * 5}
+	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
-	fc := ebay.NewFindingClient(client, appID)
-	fc.URL = "http://127.0.0.1"
-	resp, err := fc.FindItemsByCategories(context.Background(), params)
+	client := ebay.NewFindingClient(c, appID)
+	resp, err := client.FindItemsByCategories(context.Background(), params)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(resp)
 	}
 	// Output:
-	// ebay: failed to perform eBay Finding API request: Get "http://127.0.0.1?OPERATION-NAME=findItemsByCategory&RESPONSE-DATA-FORMAT=JSON&SECURITY-APPNAME=your_app_id&SERVICE-VERSION=1.0.0&categoryId%280%29=9355&itemFilter%280%29.name=MaxPrice&itemFilter%280%29.paramName=Currency&itemFilter%280%29.paramValue=EUR&itemFilter%280%29.value%280%29=500.0": dial tcp 127.0.0.1:80: connect: connection refused
+	// ebay: failed to perform eBay Finding API request with status code 500
 }
 
 func ExampleFindingClient_FindItemsByKeywords() {
@@ -42,18 +41,17 @@ func ExampleFindingClient_FindItemsByKeywords() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	client := &http.Client{Timeout: time.Second * 5}
+	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
-	fc := ebay.NewFindingClient(client, appID)
-	fc.URL = "http://127.0.0.1"
-	resp, err := fc.FindItemsByKeywords(context.Background(), params)
+	client := ebay.NewFindingClient(c, appID)
+	resp, err := client.FindItemsByKeywords(context.Background(), params)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(resp)
 	}
 	// Output:
-	// ebay: failed to perform eBay Finding API request: Get "http://127.0.0.1?OPERATION-NAME=findItemsByKeywords&RESPONSE-DATA-FORMAT=JSON&SECURITY-APPNAME=your_app_id&SERVICE-VERSION=1.0.0&itemFilter%280%29.name=MaxPrice&itemFilter%280%29.paramName=Currency&itemFilter%280%29.paramValue=EUR&itemFilter%280%29.value%280%29=500.0&keywords=iphone": dial tcp 127.0.0.1:80: connect: connection refused
+	// ebay: failed to perform eBay Finding API request with status code 500
 }
 
 func ExampleFindingClient_FindItemsAdvanced() {
@@ -65,18 +63,17 @@ func ExampleFindingClient_FindItemsAdvanced() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	client := &http.Client{Timeout: time.Second * 5}
+	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
-	fc := ebay.NewFindingClient(client, appID)
-	fc.URL = "http://127.0.0.1"
-	resp, err := fc.FindItemsAdvanced(context.Background(), params)
+	client := ebay.NewFindingClient(c, appID)
+	resp, err := client.FindItemsAdvanced(context.Background(), params)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(resp)
 	}
 	// Output:
-	// ebay: failed to perform eBay Finding API request: Get "http://127.0.0.1?OPERATION-NAME=findItemsAdvanced&RESPONSE-DATA-FORMAT=JSON&SECURITY-APPNAME=your_app_id&SERVICE-VERSION=1.0.0&categoryId%280%29=9355&itemFilter%280%29.name=MaxPrice&itemFilter%280%29.paramName=Currency&itemFilter%280%29.paramValue=EUR&itemFilter%280%29.value%280%29=500.0&keywords=iphone": dial tcp 127.0.0.1:80: connect: connection refused
+	// ebay: failed to perform eBay Finding API request with status code 500
 }
 
 func ExampleFindingClient_FindItemsByProduct() {
@@ -88,18 +85,17 @@ func ExampleFindingClient_FindItemsByProduct() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	client := &http.Client{Timeout: time.Second * 5}
+	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
-	fc := ebay.NewFindingClient(client, appID)
-	fc.URL = "http://127.0.0.1"
-	resp, err := fc.FindItemsByProduct(context.Background(), params)
+	client := ebay.NewFindingClient(c, appID)
+	resp, err := client.FindItemsByProduct(context.Background(), params)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(resp)
 	}
 	// Output:
-	// ebay: failed to perform eBay Finding API request: Get "http://127.0.0.1?OPERATION-NAME=findItemsByProduct&RESPONSE-DATA-FORMAT=JSON&SECURITY-APPNAME=your_app_id&SERVICE-VERSION=1.0.0&itemFilter%280%29.name=MaxPrice&itemFilter%280%29.paramName=Currency&itemFilter%280%29.paramValue=EUR&itemFilter%280%29.value%280%29=50.0&productId=9780131101630&productId.%40type=ISBN": dial tcp 127.0.0.1:80: connect: connection refused
+	// ebay: failed to perform eBay Finding API request with status code 500
 }
 
 func ExampleFindingClient_FindItemsInEBayStores() {
@@ -110,16 +106,15 @@ func ExampleFindingClient_FindItemsInEBayStores() {
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	client := &http.Client{Timeout: time.Second * 5}
+	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
-	fc := ebay.NewFindingClient(client, appID)
-	fc.URL = "http://127.0.0.1"
-	resp, err := fc.FindItemsInEBayStores(context.Background(), params)
+	client := ebay.NewFindingClient(c, appID)
+	resp, err := client.FindItemsInEBayStores(context.Background(), params)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(resp)
 	}
 	// Output:
-	// ebay: failed to perform eBay Finding API request: Get "http://127.0.0.1?OPERATION-NAME=findItemsIneBayStores&RESPONSE-DATA-FORMAT=JSON&SECURITY-APPNAME=your_app_id&SERVICE-VERSION=1.0.0&itemFilter%280%29.name=MaxPrice&itemFilter%280%29.paramName=Currency&itemFilter%280%29.paramValue=EUR&itemFilter%280%29.value%280%29=50.0&storeName=Supplytronics": dial tcp 127.0.0.1:80: connect: connection refused
+	// ebay: failed to perform eBay Finding API request with status code 500
 }

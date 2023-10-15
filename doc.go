@@ -8,9 +8,6 @@ making API requests, and handling responses.
 
 To interact with the eBay Finding API, create a [FindingClient]:
 
-	client := &http.Client{Timeout: time.Second * 5}
-	appID := "your_app_id"
-	fc := ebay.NewFindingClient(client, appID)
 	params := map[string]string{
 		"categoryId":            "9355",
 		"itemFilter.name":       "MaxPrice",
@@ -18,7 +15,10 @@ To interact with the eBay Finding API, create a [FindingClient]:
 		"itemFilter.paramName":  "Currency",
 		"itemFilter.paramValue": "EUR",
 	}
-	resp, err := fc.FindItemsByCategories(context.Background(), params)
+	c := &http.Client{Timeout: time.Second * 5}
+	appID := "your_app_id"
+	client := ebay.NewFindingClient(c, appID)
+	resp, err := client.FindItemsByCategories(context.Background(), params)
 	if err != nil {
 		// handle error
 	}
