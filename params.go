@@ -243,7 +243,7 @@ func (fp *findItemsByCategoryParams) validate(params map[string]string) error {
 	fp.categoryIDs = categoryIDs
 	globalID, ok := params["Global-ID"]
 	if ok {
-		if err := validateGlobalID(globalID); err != nil {
+		if err = validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -373,7 +373,7 @@ func (fp *findItemsByKeywordsParams) validate(params map[string]string) error {
 	fp.keywords = keywords
 	globalID, ok := params["Global-ID"]
 	if ok {
-		if err := validateGlobalID(globalID); err != nil {
+		if err = validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID
@@ -671,7 +671,7 @@ func (fp *findItemsByProductParams) validate(params map[string]string) error {
 	}
 	globalID, ok := params["Global-ID"]
 	if ok {
-		if err := validateGlobalID(globalID); err != nil {
+		if err = validateGlobalID(globalID); err != nil {
 			return err
 		}
 		fp.globalID = &globalID

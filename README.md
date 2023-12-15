@@ -1,7 +1,7 @@
 # eBay Go API Client
 
 [![GoDoc](https://godoc.org/github.com/matthewdargan/ebay?status.svg)](https://godoc.org/github.com/matthewdargan/ebay)
-[![Build Status](https://github.com/matthewdargan/ebay/actions/workflows/go-ci.yml/badge.svg?branch=main)](https://github.com/matthewdargan/ebay/actions/workflows/go-ci.yml)
+[![Build Status](https://github.com/matthewdargan/ebay/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/matthewdargan/ebay/actions/workflows/go.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/matthewdargan/ebay)](https://goreportcard.com/report/github.com/matthewdargan/ebay)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 

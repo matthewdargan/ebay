@@ -144,11 +144,11 @@ func processNonNumberedAspectFilter(params map[string]string) ([]aspectFilter, e
 	if err != nil {
 		return nil, err
 	}
-	filter := aspectFilter{
+	flt := aspectFilter{
 		aspectName:       params["aspectFilter.aspectName"],
 		aspectValueNames: filterValues,
 	}
-	return []aspectFilter{filter}, nil
+	return []aspectFilter{flt}, nil
 }
 
 func processNumberedAspectFilters(params map[string]string) ([]aspectFilter, error) {
@@ -162,11 +162,11 @@ func processNumberedAspectFilters(params map[string]string) ([]aspectFilter, err
 		if err != nil {
 			return nil, err
 		}
-		aspectFilter := aspectFilter{
+		flt := aspectFilter{
 			aspectName:       name,
 			aspectValueNames: filterValues,
 		}
-		aspectFilters = append(aspectFilters, aspectFilter)
+		aspectFilters = append(aspectFilters, flt)
 	}
 	return aspectFilters, nil
 }
@@ -188,7 +188,7 @@ func processNonNumberedItemFilter(params map[string]string) ([]itemFilter, error
 	if err != nil {
 		return nil, err
 	}
-	filter := itemFilter{
+	flt := itemFilter{
 		name:   params["itemFilter.name"],
 		values: filterValues,
 	}
@@ -198,13 +198,13 @@ func processNonNumberedItemFilter(params map[string]string) ([]itemFilter, error
 		return nil, ErrIncompleteItemFilterParam
 	}
 	if pnOk && pvOk {
-		filter.paramName = &pn
-		filter.paramValue = &pv
+		flt.paramName = &pn
+		flt.paramValue = &pv
 	}
-	if err = handleItemFilterType(&filter, nil, params); err != nil {
+	if err = handleItemFilterType(&flt, nil, params); err != nil {
 		return nil, err
 	}
-	return []itemFilter{filter}, nil
+	return []itemFilter{flt}, nil
 }
 
 func processNumberedItemFilters(params map[string]string) ([]itemFilter, error) {
@@ -218,7 +218,7 @@ func processNumberedItemFilters(params map[string]string) ([]itemFilter, error) 
 		if err != nil {
 			return nil, err
 		}
-		itemFilter := itemFilter{
+		flt := itemFilter{
 			name:   name,
 			values: filterValues,
 		}
@@ -228,10 +228,10 @@ func processNumberedItemFilters(params map[string]string) ([]itemFilter, error) 
 			return nil, ErrIncompleteItemFilterParam
 		}
 		if pnOk && pvOk {
-			itemFilter.paramName = &pn
-			itemFilter.paramValue = &pv
+			flt.paramName = &pn
+			flt.paramValue = &pv
 		}
-		itemFilters = append(itemFilters, itemFilter)
+		itemFilters = append(itemFilters, flt)
 	}
 	for i := range itemFilters {
 		if err := handleItemFilterType(&itemFilters[i], itemFilters, params); err != nil {
