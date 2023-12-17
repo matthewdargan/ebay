@@ -21,6 +21,17 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
+      - name: govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-version-input: "1.21"
+          check-latest: true
+      - name: deadcode
+        uses: lost-coders/deadcode-action@v0.1.0
+        with:
+          go-version: "1.21"
+          check-latest: true
+          flags: "-test"
   test:
     runs-on: ubuntu-latest
     steps:
