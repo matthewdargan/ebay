@@ -1,25 +1,15 @@
-// Copyright 2023 Matthew P. Dargan.
-// SPDX-License-Identifier: Apache-2.0
-
 package ebay
 
 import "time"
 
-// A ResultProvider represents results from eBay Finding API endpoints.
-type ResultProvider interface {
-	// Results returns results from an eBay Finding API endpoint.
-	Results() []FindItemsResponse
+// FindItemsAdvancedResponse represents the response from [FindingClient.FindItemsAdvanced].
+type FindItemsAdvancedResponse struct {
+	ItemsResponse []FindItemsResponse `json:"findItemsAdvancedResponse"`
 }
 
-// FindItemsByCategoriesResponse represents the response from [FindingClient.FindItemsByCategories].
-type FindItemsByCategoriesResponse struct {
+// FindItemsByCategoryResponse represents the response from [FindingClient.FindItemsByCategory].
+type FindItemsByCategoryResponse struct {
 	ItemsResponse []FindItemsResponse `json:"findItemsByCategoryResponse"`
-}
-
-// Results returns results from the eBay Finding API findItemsByCategory endpoint.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsByCategory.html.
-func (r FindItemsByCategoriesResponse) Results() []FindItemsResponse {
-	return r.ItemsResponse
 }
 
 // FindItemsByKeywordsResponse represents the response from [FindingClient.FindItemsByKeywords].
@@ -27,43 +17,14 @@ type FindItemsByKeywordsResponse struct {
 	ItemsResponse []FindItemsResponse `json:"findItemsByKeywordsResponse"`
 }
 
-// Results returns results from the eBay Finding API findItemsByKeywords endpoint.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsByKeywords.html.
-func (r FindItemsByKeywordsResponse) Results() []FindItemsResponse {
-	return r.ItemsResponse
-}
-
-// FindItemsAdvancedResponse represents the response from [FindingClient.FindItemsAdvanced].
-type FindItemsAdvancedResponse struct {
-	ItemsResponse []FindItemsResponse `json:"findItemsAdvancedResponse"`
-}
-
-// Results returns results from the eBay Finding API findItemsAdvanced endpoint.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsAdvanced.html.
-func (r FindItemsAdvancedResponse) Results() []FindItemsResponse {
-	return r.ItemsResponse
-}
-
 // FindItemsByProductResponse represents the response from [FindingClient.FindItemsByProduct].
 type FindItemsByProductResponse struct {
 	ItemsResponse []FindItemsResponse `json:"findItemsByProductResponse"`
 }
 
-// Results returns results from the eBay Finding API findItemsByProduct endpoint.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsByProduct.html.
-func (r FindItemsByProductResponse) Results() []FindItemsResponse {
-	return r.ItemsResponse
-}
-
 // FindItemsInEBayStoresResponse represents the response from [FindingClient.FindItemsInEBayStores].
 type FindItemsInEBayStoresResponse struct {
 	ItemsResponse []FindItemsResponse `json:"findItemsIneBayStoresResponse"`
-}
-
-// Results returns results from the eBay Finding API findItemsIneBayStores endpoint.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsIneBayStores.html.
-func (r FindItemsInEBayStoresResponse) Results() []FindItemsResponse {
-	return r.ItemsResponse
 }
 
 // FindItemsResponse represents the base response container for all Finding Service operations.

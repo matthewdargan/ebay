@@ -11,6 +11,18 @@ import (
 	"net/http"
 )
 
+const (
+	findingURL        = "https://svcs.ebay.com/services/search/FindingService/v1"
+	operationAdvanced = "findItemsAdvanced"
+	operationCategory = "findItemsByCategory"
+	operationKeywords = "findItemsByKeywords"
+	operationProduct  = "findItemsByProduct"
+	operationStores   = "findItemsIneBayStores"
+	serviceVersion    = "1.0.0"
+	responseFormat    = "JSON"
+	restPayload       = ""
+)
+
 // A FindingClient is a client that interacts with the eBay Finding API.
 type FindingClient struct {
 	// Client is the HTTP client used to make requests to the eBay Finding API.
@@ -31,123 +43,121 @@ type FindingClient struct {
 	URL string
 }
 
-const findingURL = "https://svcs.ebay.com/services/search/FindingService/v1?REST-PAYLOAD"
-
 // NewFindingClient creates a new FindingClient with the given HTTP client and valid eBay application ID.
 func NewFindingClient(client *http.Client, appID string) *FindingClient {
 	return &FindingClient{Client: client, AppID: appID, URL: findingURL}
 }
 
-// APIError represents an eBay Finding API call error.
-type APIError struct {
-	// Err is the error that occurred during the call.
-	Err error
+var (
+	// ErrNewRequest is returned when creating an HTTP request fails.
+	ErrNewRequest = errors.New("ebay: failed to create HTTP request")
 
-	// StatusCode is the HTTP status code indicating why the call was bad.
-	StatusCode int
-}
+	// ErrFailedRequest is returned when the eBay Finding API request fails.
+	ErrFailedRequest = errors.New("ebay: failed to perform eBay Finding API request")
 
-func (e *APIError) Error() string {
-	if e.Err != nil {
-		return fmt.Sprintf("ebay: %v", e.Err)
-	}
-	return "ebay: API error occurred"
-}
+	// ErrInvalidStatus is returned when the eBay Finding API request returns an invalid status code.
+	ErrInvalidStatus = errors.New("ebay: failed to perform eBay Finding API request with status code")
 
-// FindItemsByCategories searches for items on eBay using specific eBay category ID numbers.
-// See [Searching and Browsing By Category] for searching by category.
-//
-// The category IDs narrow down the search results. The provided parameters
-// contain additional query parameters for the search. If the FindingClient is configured with an invalid
-// AppID, the search call will fail to authenticate.
-//
-// An error of type [*APIError] is returned if the category IDs and/or additional parameters were not valid,
-// the request could not be created, the request or response could not be completed, or the response could not
-// be parsed into type [FindItemsByCategoriesResponse].
-//
-// If the returned error is nil, the [FindItemsByCategoriesResponse] will contain a non-nil ItemsResponse
-// containing search results.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsByCategory.html.
-//
-// [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
-func (c *FindingClient) FindItemsByCategories(ctx context.Context, params map[string]string) (FindItemsByCategoriesResponse, error) {
-	var findItems FindItemsByCategoriesResponse
-	if err := c.findItems(ctx, params, &findItemsByCategoryParams{appID: c.AppID}, &findItems); err != nil {
-		return findItems, err
-	}
-	return findItems, nil
-}
-
-// FindItemsByKeywords searches for items on eBay by a keyword query.
-// See [Searching by Keywords] for searching by keywords.
-//
-// The keywords narrow down the search results. The provided parameters contain additional query parameters
-// for the search. If the FindingClient is configured with an invalid AppID, the search call will fail to authenticate.
-//
-// An error of type [*APIError] is returned if the keywords and/or additional parameters were not valid,
-// the request could not be created, the request or response could not be completed, or the response could not
-// be parsed into type [FindItemsByKeywordsResponse].
-//
-// If the returned error is nil, the [FindItemsByKeywordsResponse] will contain a non-nil ItemsResponse
-// containing search results.
-// See https://developer.ebay.com/devzone/finding/CallRef/findItemsByKeywords.html.
-//
-// [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
-func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[string]string) (FindItemsByKeywordsResponse, error) {
-	var findItems FindItemsByKeywordsResponse
-	if err := c.findItems(ctx, params, &findItemsByKeywordsParams{appID: c.AppID}, &findItems); err != nil {
-		return findItems, err
-	}
-	return findItems, nil
-}
+	// ErrDecodeAPIResponse is returned when there is an error decoding the eBay Finding API response body.
+	ErrDecodeAPIResponse = errors.New("ebay: failed to decode eBay Finding API response body")
+)
 
 // FindItemsAdvanced searches for items on eBay by category and/or keyword.
 // See [Searching and Browsing By Category] for searching by category
 // and [Searching by Keywords] for searching by keywords.
 //
-// The category IDs and keywords narrow down the search results. The provided parameters contain additional
-// query parameters for the search. If the FindingClient is configured with an invalid AppID,
-// the search call will fail to authenticate.
-//
-// An error of type [*APIError] is returned if the category IDs, keywords, and/or additional parameters were not valid,
-// the request could not be created, the request or response could not be completed, or the response could not
-// be parsed into type [FindItemsAdvancedResponse].
-//
-// If the returned error is nil, the [FindItemsAdvancedResponse] will contain a non-nil ItemsResponse
-// containing search results.
-// See https://developer.ebay.com/Devzone/finding/CallRef/findItemsAdvanced.html.
-//
 // [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
-func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string]string) (FindItemsAdvancedResponse, error) {
-	var findItems FindItemsAdvancedResponse
-	if err := c.findItems(ctx, params, &findItemsAdvancedParams{appID: c.AppID}, &findItems); err != nil {
-		return findItems, err
+func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string]string) (*FindItemsAdvancedResponse, error) {
+	req, err := c.newRequest(ctx, operationAdvanced, params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
-	return findItems, nil
+	resp, err := c.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%w: %d", ErrInvalidStatus, resp.StatusCode)
+	}
+	var res FindItemsAdvancedResponse
+	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+	}
+	return &res, nil
+}
+
+// FindItemsByCategory searches for items on eBay using specific eBay category ID numbers.
+// See [Searching and Browsing By Category] for searching by category.
+//
+// [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
+func (c *FindingClient) FindItemsByCategory(ctx context.Context, params map[string]string) (*FindItemsByCategoryResponse, error) {
+	req, err := c.newRequest(ctx, operationCategory, params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+	}
+	resp, err := c.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%w: %d", ErrInvalidStatus, resp.StatusCode)
+	}
+	var res FindItemsByCategoryResponse
+	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+	}
+	return &res, nil
+}
+
+// FindItemsByKeywords searches for items on eBay by a keyword query.
+// See [Searching by Keywords] for searching by keywords.
+//
+// [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
+func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[string]string) (*FindItemsByKeywordsResponse, error) {
+	req, err := c.newRequest(ctx, operationKeywords, params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+	}
+	resp, err := c.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%w: %d", ErrInvalidStatus, resp.StatusCode)
+	}
+	var res FindItemsByKeywordsResponse
+	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+	}
+	return &res, nil
 }
 
 // FindItemsByProduct searches for items on eBay using specific eBay product values.
 // See [Searching by Product] for searching by product.
 //
-// The product ID narrows down the search results. The provided parameters contain additional query parameters
-// for the search. If the FindingClient is configured with an invalid AppID, the search call will fail to authenticate.
-//
-// An error of type [*APIError] is returned if the product ID and/or additional parameters were not valid,
-// the request could not be created, the request or response could not be completed, or the response could not
-// be parsed into type [FindItemsByProductResponse].
-//
-// If the returned error is nil, the [FindItemsByProductResponse] will contain a non-nil ItemsResponse
-// containing search results.
-// See https://developer.ebay.com/Devzone/finding/CallRef/findItemsByProduct.html.
-//
 // [Searching by Product]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-product.html
-func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[string]string) (FindItemsByProductResponse, error) {
-	var findItems FindItemsByProductResponse
-	if err := c.findItems(ctx, params, &findItemsByProductParams{appID: c.AppID}, &findItems); err != nil {
-		return findItems, err
+func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[string]string) (*FindItemsByProductResponse, error) {
+	req, err := c.newRequest(ctx, operationProduct, params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
-	return findItems, nil
+	resp, err := c.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%w: %d", ErrInvalidStatus, resp.StatusCode)
+	}
+	var res FindItemsByProductResponse
+	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+	}
+	return &res, nil
 }
 
 // FindItemsInEBayStores searches for items in the eBay store inventories. The search can utilize a combination of
@@ -156,63 +166,44 @@ func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[strin
 // See [Searching and Browsing By Category] for searching by category
 // and [Searching by Keywords] for searching by keywords.
 //
-// The store name, category IDs, and keywords narrow down the search results. The provided parameters contain
-// additional query parameters for the search. If the FindingClient is configured with an invalid AppID,
-// the search call will fail to authenticate.
-//
-// An error of type [*APIError] is returned if the store name, category IDs, keywords, and/or additional parameters
-// were not valid, the request could not be created, the request or response could not be completed,
-// or the response could not be parsed into type [FindItemsInEBayStoresResponse].
-//
-// If the returned error is nil, the [FindItemsInEBayStoresResponse] will contain a non-nil ItemsResponse
-// containing search results.
-// See https://developer.ebay.com/Devzone/finding/CallRef/findItemsIneBayStores.html.
-//
 // [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
-func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[string]string) (FindItemsInEBayStoresResponse, error) {
-	var findItems FindItemsInEBayStoresResponse
-	if err := c.findItems(ctx, params, &findItemsInEBayStoresParams{appID: c.AppID}, &findItems); err != nil {
-		return findItems, err
-	}
-	return findItems, nil
-}
-
-var (
-	// ErrFailedRequest is returned when the eBay Finding API request fails.
-	ErrFailedRequest = errors.New("failed to perform eBay Finding API request")
-
-	// ErrInvalidStatus is returned when the eBay Finding API request returns an invalid status code.
-	ErrInvalidStatus = errors.New("failed to perform eBay Finding API request with status code")
-
-	// ErrDecodeAPIResponse is returned when there is an error decoding the eBay Finding API response body.
-	ErrDecodeAPIResponse = errors.New("failed to decode eBay Finding API response body")
-)
-
-func (c *FindingClient) findItems(ctx context.Context, params map[string]string, v findParamsValidator, res ResultProvider) error {
-	if err := v.validate(params); err != nil {
-		return &APIError{Err: err, StatusCode: http.StatusBadRequest}
-	}
-	req, err := v.newRequest(ctx, c.URL)
+func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[string]string) (*FindItemsInEBayStoresResponse, error) {
+	req, err := c.newRequest(ctx, operationStores, params)
 	if err != nil {
-		return &APIError{Err: err, StatusCode: http.StatusInternalServerError}
+		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return &APIError{Err: fmt.Errorf("%w: %w", ErrFailedRequest, err), StatusCode: http.StatusInternalServerError}
+		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return &APIError{
-			Err:        fmt.Errorf("%w %d", ErrInvalidStatus, resp.StatusCode),
-			StatusCode: http.StatusInternalServerError,
-		}
+		return nil, fmt.Errorf("%w: %d", ErrInvalidStatus, resp.StatusCode)
 	}
+	var res FindItemsInEBayStoresResponse
 	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
-		return &APIError{
-			Err:        fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err),
-			StatusCode: http.StatusInternalServerError,
+		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+	}
+	return &res, nil
+}
+
+func (c *FindingClient) newRequest(ctx context.Context, op string, params map[string]string) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.URL, nil)
+	if err != nil {
+		return nil, err
+	}
+	qry := req.URL.Query()
+	qry.Set("Operation-Name", op)
+	qry.Set("Service-Version", serviceVersion)
+	qry.Set("Security-AppName", c.AppID)
+	qry.Set("Response-Data-Format", responseFormat)
+	qry.Set("REST-Payload", restPayload)
+	for k, v := range params {
+		if v != "" {
+			qry.Set(k, v)
 		}
 	}
-	return nil
+	req.URL.RawQuery = qry.Encode()
+	return req, nil
 }
