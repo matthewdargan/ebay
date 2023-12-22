@@ -18,7 +18,7 @@ To interact with the eBay Finding API, create a [FindingClient]:
 	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
 	client := ebay.NewFindingClient(c, appID)
-	resp, err := client.FindItemsByCategories(context.Background(), params)
+	resp, err := client.FindItemsByCategory(context.Background(), params)
 	if err != nil {
 		// handle error
 	}

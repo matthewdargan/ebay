@@ -22,7 +22,7 @@ params := map[string]string{
 c := &http.Client{Timeout: time.Second * 5}
 appID := "your_app_id"
 client := ebay.NewFindingClient(c, appID)
-resp, err := client.FindItemsByCategories(context.Background(), params)
+resp, err := client.FindItemsByCategory(context.Background(), params)
 if err != nil {
 	// handle error
 }
