@@ -69,7 +69,7 @@ var (
 // [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
 func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string]string) (*FindItemsAdvancedResponse, error) {
-	req, err := c.newRequest(ctx, operationAdvanced, params)
+	req, err := c.request(ctx, operationAdvanced, params)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
@@ -93,7 +93,7 @@ func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string
 //
 // [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
 func (c *FindingClient) FindItemsByCategory(ctx context.Context, params map[string]string) (*FindItemsByCategoryResponse, error) {
-	req, err := c.newRequest(ctx, operationCategory, params)
+	req, err := c.request(ctx, operationCategory, params)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
@@ -117,7 +117,7 @@ func (c *FindingClient) FindItemsByCategory(ctx context.Context, params map[stri
 //
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
 func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[string]string) (*FindItemsByKeywordsResponse, error) {
-	req, err := c.newRequest(ctx, operationKeywords, params)
+	req, err := c.request(ctx, operationKeywords, params)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
@@ -141,7 +141,7 @@ func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[stri
 //
 // [Searching by Product]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-product.html
 func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[string]string) (*FindItemsByProductResponse, error) {
-	req, err := c.newRequest(ctx, operationProduct, params)
+	req, err := c.request(ctx, operationProduct, params)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
@@ -169,7 +169,7 @@ func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[strin
 // [Searching and Browsing By Category]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-browsing-by-category.html
 // [Searching by Keywords]: https://developer.ebay.com/api-docs/user-guides/static/finding-user-guide/finding-searching-by-keywords.html
 func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[string]string) (*FindItemsInEBayStoresResponse, error) {
-	req, err := c.newRequest(ctx, operationStores, params)
+	req, err := c.request(ctx, operationStores, params)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
 	}
@@ -188,7 +188,7 @@ func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[st
 	return &res, nil
 }
 
-func (c *FindingClient) newRequest(ctx context.Context, op string, params map[string]string) (*http.Request, error) {
+func (c *FindingClient) request(ctx context.Context, op string, params map[string]string) (*http.Request, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.URL, nil)
 	if err != nil {
 		return nil, err
