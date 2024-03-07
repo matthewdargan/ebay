@@ -32,7 +32,7 @@ func TestFindingClient_FindItemsAdvanced(t *testing.T) {
 	t.Parallel()
 	t.Run("ResponseSuccess", func(t *testing.T) {
 		t.Parallel()
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			err := json.NewEncoder(w).Encode(&FindItemsAdvancedResponse{})
 			if err != nil {
@@ -76,7 +76,7 @@ func TestFindingClient_FindItemsAdvanced(t *testing.T) {
 
 	t.Run("InvalidStatusError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}))
 		defer errorSrv.Close()
@@ -90,7 +90,7 @@ func TestFindingClient_FindItemsAdvanced(t *testing.T) {
 
 	t.Run("JSONDecodeError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`baddata123`))
 			if err != nil {
@@ -111,7 +111,7 @@ func TestFindingClient_FindItemsByCategory(t *testing.T) {
 	t.Parallel()
 	t.Run("ResponseSuccess", func(t *testing.T) {
 		t.Parallel()
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			err := json.NewEncoder(w).Encode(&FindItemsByCategoryResponse{})
 			if err != nil {
@@ -155,7 +155,7 @@ func TestFindingClient_FindItemsByCategory(t *testing.T) {
 
 	t.Run("InvalidStatusError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}))
 		defer errorSrv.Close()
@@ -169,7 +169,7 @@ func TestFindingClient_FindItemsByCategory(t *testing.T) {
 
 	t.Run("JSONDecodeError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`baddata123`))
 			if err != nil {
@@ -190,7 +190,7 @@ func TestFindingClient_FindItemsByKeywords(t *testing.T) {
 	t.Parallel()
 	t.Run("ResponseSuccess", func(t *testing.T) {
 		t.Parallel()
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			err := json.NewEncoder(w).Encode(&FindItemsByKeywordsResponse{})
 			if err != nil {
@@ -234,7 +234,7 @@ func TestFindingClient_FindItemsByKeywords(t *testing.T) {
 
 	t.Run("InvalidStatusError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}))
 		defer errorSrv.Close()
@@ -248,7 +248,7 @@ func TestFindingClient_FindItemsByKeywords(t *testing.T) {
 
 	t.Run("JSONDecodeError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`baddata123`))
 			if err != nil {
@@ -269,7 +269,7 @@ func TestFindingClient_FindItemsByProduct(t *testing.T) {
 	t.Parallel()
 	t.Run("ResponseSuccess", func(t *testing.T) {
 		t.Parallel()
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			err := json.NewEncoder(w).Encode(&FindItemsByProductResponse{})
 			if err != nil {
@@ -313,7 +313,7 @@ func TestFindingClient_FindItemsByProduct(t *testing.T) {
 
 	t.Run("InvalidStatusError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}))
 		defer errorSrv.Close()
@@ -327,7 +327,7 @@ func TestFindingClient_FindItemsByProduct(t *testing.T) {
 
 	t.Run("JSONDecodeError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`baddata123`))
 			if err != nil {
@@ -348,7 +348,7 @@ func TestFindingClient_FindItemsInEBayStores(t *testing.T) {
 	t.Parallel()
 	t.Run("ResponseSuccess", func(t *testing.T) {
 		t.Parallel()
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			err := json.NewEncoder(w).Encode(&FindItemsInEBayStoresResponse{})
 			if err != nil {
@@ -392,7 +392,7 @@ func TestFindingClient_FindItemsInEBayStores(t *testing.T) {
 
 	t.Run("InvalidStatusError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}))
 		defer errorSrv.Close()
@@ -406,7 +406,7 @@ func TestFindingClient_FindItemsInEBayStores(t *testing.T) {
 
 	t.Run("JSONDecodeError", func(t *testing.T) {
 		t.Parallel()
-		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`baddata123`))
 			if err != nil {
