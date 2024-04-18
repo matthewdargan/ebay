@@ -5,7 +5,6 @@ package ebay_test
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -24,14 +23,7 @@ func ExampleFindingClient_FindItemsAdvanced() {
 	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
 	client := ebay.NewFindingClient(c, appID)
-	resp, err := client.FindItemsAdvanced(context.Background(), params)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(resp)
-	}
-	// Output:
-	// ebay: failed to perform eBay Finding API request with status code: 500
+	_, _ = client.FindItemsAdvanced(context.Background(), params)
 }
 
 func ExampleFindingClient_FindItemsByCategory() {
@@ -45,14 +37,7 @@ func ExampleFindingClient_FindItemsByCategory() {
 	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
 	client := ebay.NewFindingClient(c, appID)
-	resp, err := client.FindItemsByCategory(context.Background(), params)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(resp)
-	}
-	// Output:
-	// ebay: failed to perform eBay Finding API request with status code: 500
+	_, _ = client.FindItemsByCategory(context.Background(), params)
 }
 
 func ExampleFindingClient_FindItemsByKeywords() {
@@ -66,14 +51,7 @@ func ExampleFindingClient_FindItemsByKeywords() {
 	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
 	client := ebay.NewFindingClient(c, appID)
-	resp, err := client.FindItemsByKeywords(context.Background(), params)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(resp)
-	}
-	// Output:
-	// ebay: failed to perform eBay Finding API request with status code: 500
+	_, _ = client.FindItemsByKeywords(context.Background(), params)
 }
 
 func ExampleFindingClient_FindItemsByProduct() {
@@ -88,14 +66,7 @@ func ExampleFindingClient_FindItemsByProduct() {
 	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
 	client := ebay.NewFindingClient(c, appID)
-	resp, err := client.FindItemsByProduct(context.Background(), params)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(resp)
-	}
-	// Output:
-	// ebay: failed to perform eBay Finding API request with status code: 500
+	_, _ = client.FindItemsByProduct(context.Background(), params)
 }
 
 func ExampleFindingClient_FindItemsInEBayStores() {
@@ -109,12 +80,5 @@ func ExampleFindingClient_FindItemsInEBayStores() {
 	c := &http.Client{Timeout: time.Second * 5}
 	appID := "your_app_id"
 	client := ebay.NewFindingClient(c, appID)
-	resp, err := client.FindItemsInEBayStores(context.Background(), params)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(resp)
-	}
-	// Output:
-	// ebay: failed to perform eBay Finding API request with status code: 500
+	_, _ = client.FindItemsInEBayStores(context.Background(), params)
 }
