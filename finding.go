@@ -71,11 +71,11 @@ var (
 func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string]string) (*FindItemsAdvancedResponse, error) {
 	req, err := c.request(ctx, operationAdvanced, params)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrNewRequest, err)
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrFailedRequest, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -83,7 +83,7 @@ func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string
 	}
 	var res FindItemsAdvancedResponse
 	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+		return nil, fmt.Errorf("%w: %s", ErrDecodeAPIResponse, err)
 	}
 	return &res, nil
 }
@@ -95,11 +95,11 @@ func (c *FindingClient) FindItemsAdvanced(ctx context.Context, params map[string
 func (c *FindingClient) FindItemsByCategory(ctx context.Context, params map[string]string) (*FindItemsByCategoryResponse, error) {
 	req, err := c.request(ctx, operationCategory, params)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrNewRequest, err)
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrFailedRequest, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -107,7 +107,7 @@ func (c *FindingClient) FindItemsByCategory(ctx context.Context, params map[stri
 	}
 	var res FindItemsByCategoryResponse
 	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+		return nil, fmt.Errorf("%w: %s", ErrDecodeAPIResponse, err)
 	}
 	return &res, nil
 }
@@ -119,11 +119,11 @@ func (c *FindingClient) FindItemsByCategory(ctx context.Context, params map[stri
 func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[string]string) (*FindItemsByKeywordsResponse, error) {
 	req, err := c.request(ctx, operationKeywords, params)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrNewRequest, err)
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrFailedRequest, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -131,7 +131,7 @@ func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[stri
 	}
 	var res FindItemsByKeywordsResponse
 	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+		return nil, fmt.Errorf("%w: %s", ErrDecodeAPIResponse, err)
 	}
 	return &res, nil
 }
@@ -143,11 +143,11 @@ func (c *FindingClient) FindItemsByKeywords(ctx context.Context, params map[stri
 func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[string]string) (*FindItemsByProductResponse, error) {
 	req, err := c.request(ctx, operationProduct, params)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrNewRequest, err)
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrFailedRequest, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -155,7 +155,7 @@ func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[strin
 	}
 	var res FindItemsByProductResponse
 	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+		return nil, fmt.Errorf("%w: %s", ErrDecodeAPIResponse, err)
 	}
 	return &res, nil
 }
@@ -171,11 +171,11 @@ func (c *FindingClient) FindItemsByProduct(ctx context.Context, params map[strin
 func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[string]string) (*FindItemsInEBayStoresResponse, error) {
 	req, err := c.request(ctx, operationStores, params)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrNewRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrNewRequest, err)
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrFailedRequest, err)
+		return nil, fmt.Errorf("%w: %s", ErrFailedRequest, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -183,7 +183,7 @@ func (c *FindingClient) FindItemsInEBayStores(ctx context.Context, params map[st
 	}
 	var res FindItemsInEBayStoresResponse
 	if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrDecodeAPIResponse, err)
+		return nil, fmt.Errorf("%w: %s", ErrDecodeAPIResponse, err)
 	}
 	return &res, nil
 }

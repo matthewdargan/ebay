@@ -36,7 +36,7 @@
             pname = "ebay";
             src = ./.;
             vendorHash = null;
-            version = "0.2.7";
+            version = "0.2.8";
           };
         };
         pre-commit = {
