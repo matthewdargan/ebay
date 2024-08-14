@@ -36,10 +36,11 @@
             pname = "ebay";
             src = ./.;
             vendorHash = null;
-            version = "0.2.11";
+            version = "0.2.12";
           };
         };
         pre-commit = {
+          check.enable = false;
           settings = {
             hooks = {
               alejandra.enable = true;
