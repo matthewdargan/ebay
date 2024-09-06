@@ -22,7 +22,7 @@
         ...
       }: {
         devShells.default = pkgs.mkShell {
-          packages = [inputs'.nix-go.packages.go];
+          packages = [inputs'.nix-go.packages.go inputs'.nix-go.packages.golangci-lint];
           shellHook = "${config.pre-commit.installationScript}";
         };
         packages = {
@@ -36,11 +36,10 @@
             pname = "ebay";
             src = ./.;
             vendorHash = null;
-            version = "0.2.12";
+            version = "0.2.13";
           };
         };
         pre-commit = {
-          check.enable = false;
           settings = {
             hooks = {
               alejandra.enable = true;
